@@ -114,7 +114,7 @@ export function EnableNotifications() {
     }
   };
 
-  if (state === "loading" || state === "unsupported") return null;
+  if (state === "loading" || state === "unsupported" || state === "subscribed") return null;
 
   const wrap = (children: React.ReactNode) => (
     <div className="notify-card">{children}</div>
