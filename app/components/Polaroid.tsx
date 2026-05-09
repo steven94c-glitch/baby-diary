@@ -80,10 +80,7 @@ export function Polaroid({
             )}
           </div>
           {caption ? <div className="polaroid-caption">{caption}</div> : <div style={{ height: 18 }} />}
-          <div className="polaroid-meta">
-            {meta}
-            {comments.length > 0 ? ` · ${comments.length} ${comments.length === 1 ? "note" : "notes"}` : " · tap to write"}
-          </div>
+          <div className="polaroid-meta">{meta}</div>
         </button>
 
         {/* BACK */}
@@ -97,7 +94,7 @@ export function Polaroid({
                 className="polaroid-back-close font-hand"
                 aria-label="Flip back"
               >
-                ↩
+                ×
               </button>
             </div>
 
