@@ -3,13 +3,152 @@
 @tailwind utilities;
 
 :root {
-  --bg: #faf7f2;
-  --ink: #2a241d;
+  --cottage: #f7f1e5;
+  --cottage-deep: #ede4d0;
+  --cornstalk: #e8d5a2;
+  --cornstalk-deep: #d6bf83;
+  --ink: #3a3027;
   --muted: #8a7e6e;
-  --accent: #c98a6b;
+  --paper: #fffdf7;
+  --notepad-line: #b9d4e8;
+  --notepad-margin: #d98c8c;
 }
 
 html, body {
-  background: var(--bg);
+  background: var(--cottage);
   color: var(--ink);
+  font-family: var(--font-serif), ui-serif, Georgia, serif;
+}
+
+.font-hand {
+  font-family: var(--font-hand), "Bradley Hand", "Comic Sans MS", cursive;
+}
+
+/* subtle linen-y texture on the page background */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background-image: radial-gradient(rgba(0, 0, 0, 0.025) 1px, transparent 1px);
+  background-size: 3px 3px;
+  z-index: 0;
+}
+
+main {
+  position: relative;
+  z-index: 1;
+}
+
+/* ------- Polaroid ------- */
+.polaroid {
+  background: var(--paper);
+  padding: 14px 14px 0;
+  box-shadow:
+    0 1px 1px rgba(0, 0, 0, 0.06),
+    0 8px 24px -8px rgba(58, 48, 39, 0.25);
+  border-radius: 2px;
+}
+.polaroid-photo {
+  background: #000;
+  overflow: hidden;
+}
+.polaroid-photo img,
+.polaroid-photo video {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.polaroid-caption {
+  padding: 14px 6px 22px;
+  text-align: center;
+  font-family: var(--font-hand), cursive;
+  font-size: 1.45rem;
+  line-height: 1.2;
+  color: var(--ink);
+}
+.polaroid-meta {
+  text-align: center;
+  font-family: var(--font-hand), cursive;
+  font-size: 0.95rem;
+  color: var(--muted);
+  padding-bottom: 18px;
+}
+
+/* ------- Sticky note ------- */
+.sticky {
+  background: var(--cornstalk);
+  padding: 28px 22px 22px;
+  font-family: var(--font-hand), cursive;
+  font-size: 1.4rem;
+  line-height: 1.35;
+  color: var(--ink);
+  box-shadow:
+    0 1px 1px rgba(0, 0, 0, 0.05),
+    6px 8px 16px -8px rgba(58, 48, 39, 0.4);
+  position: relative;
+}
+.sticky::before {
+  content: "";
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%) rotate(-2deg);
+  width: 70px;
+  height: 18px;
+  background: rgba(255, 255, 255, 0.55);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
+}
+
+/* ------- Notepad (lined paper) ------- */
+.notepad {
+  background: var(--paper);
+  background-image:
+    linear-gradient(to right, transparent 38px, var(--notepad-margin) 38px, var(--notepad-margin) 39px, transparent 39px),
+    repeating-linear-gradient(
+      to bottom,
+      transparent 0,
+      transparent 31px,
+      var(--notepad-line) 31px,
+      var(--notepad-line) 32px
+    );
+  padding: 24px 18px 22px 52px;
+  font-family: var(--font-hand), cursive;
+  font-size: 1.35rem;
+  line-height: 32px;
+  color: var(--ink);
+  box-shadow:
+    0 1px 1px rgba(0, 0, 0, 0.05),
+    0 6px 16px -8px rgba(58, 48, 39, 0.3);
+}
+
+/* ------- Cream note card ------- */
+.notecard {
+  background: var(--cottage-deep);
+  padding: 22px 22px 20px;
+  font-family: var(--font-hand), cursive;
+  font-size: 1.4rem;
+  line-height: 1.35;
+  color: var(--ink);
+  border-radius: 2px;
+  box-shadow:
+    0 1px 1px rgba(0, 0, 0, 0.05),
+    0 6px 16px -8px rgba(58, 48, 39, 0.25);
+}
+
+.note-meta {
+  display: block;
+  margin-top: 12px;
+  font-family: var(--font-hand), cursive;
+  font-size: 0.95rem;
+  color: var(--muted);
+}
+
+/* ------- Day heading ------- */
+.day-heading {
+  font-family: var(--font-hand), cursive;
+  font-size: 1.6rem;
+  color: var(--cornstalk-deep);
+  text-align: center;
+  letter-spacing: 0.02em;
 }
