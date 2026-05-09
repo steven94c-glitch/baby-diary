@@ -1,6 +1,6 @@
 import { readEntries } from "@/lib/entries";
 
-export const revalidate = 30;
+export const dynamic = "force-dynamic";
 
 const babyName = process.env.BABY_NAME ?? "Baby";
 

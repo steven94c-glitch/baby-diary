@@ -18,16 +18,21 @@ export type Entry = {
 const ENTRIES_KEY = "entries.json";
 
 async function findEntriesBlob() {
-  const { blobs } = await list({ prefix: ENTRIES_KEY, limit: 1 });
-  return blobs.find((b) => b.pathname === ENTRIES_KEY) ?? null;
+  if (!process.env.BLOB_READ_WRITE_TOKEN) return null;
+  try {
+    const { blobs } = await list({ prefix: ENTRIES_KEY, limit: 1 });
+    return blobs.find((b) => b.pathname === ENTRIES_KEY) ?? null;
+  } catch {
+    return null;
+  }
 }
 
 export async function readEntries(): Promise<Entry[]> {
   const blob = await findEntriesBlob();
   if (!blob) return [];
-  const res = await fetch(blob.url, { cache: "no-store" });
-  if (!res.ok) return [];
   try {
+    const res = await fetch(blob.url, { cache: "no-store" });
+    if (!res.ok) return [];
     const data = (await res.json()) as Entry[];
     return Array.isArray(data) ? data : [];
   } catch {
