@@ -3,18 +3,41 @@ import { readEntries, type Entry } from "@/lib/entries";
 export const dynamic = "force-dynamic";
 
 const babyName = process.env.BABY_NAME ?? "Baby";
+const tagline = process.env.TAGLINE ?? "moments and milestones";
+const TZ = "America/New_York";
+
+function parseAliases(raw: string | undefined): Record<string, string> {
+  if (!raw) return {};
+  const out: Record<string, string> = {};
+  for (const pair of raw.split(",")) {
+    const [k, v] = pair.split("=").map((s) => s.trim());
+    if (k && v) out[k.toLowerCase()] = v;
+  }
+  return out;
+}
+const AUTHOR_ALIASES = parseAliases(process.env.AUTHOR_ALIASES);
+
+function displayAuthor(name?: string): string | undefined {
+  if (!name) return undefined;
+  return AUTHOR_ALIASES[name.toLowerCase()] ?? name;
+}
 
 function formatDate(ts: number) {
-  return new Date(ts).toLocaleDateString(undefined, {
+  return new Date(ts).toLocaleDateString("en-US", {
     weekday: "long",
     year: "numeric",
     month: "long",
     day: "numeric",
+    timeZone: TZ,
   });
 }
 
 function formatTime(ts: number) {
-  return new Date(ts).toLocaleTimeString(undefined, { hour: "numeric", minute: "2-digit" });
+  return new Date(ts).toLocaleTimeString("en-US", {
+    hour: "numeric",
+    minute: "2-digit",
+    timeZone: TZ,
+  });
 }
 
 function hash(str: string): number {
@@ -58,7 +81,7 @@ function PolaroidEntry({ e }: { e: Entry }) {
         <div style={{ height: 18 }} />
       )}
       <div className="polaroid-meta">
-        {e.author ? `${e.author} · ` : ""}
+        {displayAuthor(e.author) ? `${displayAuthor(e.author)} · ` : ""}
         {formatTime(e.ts)}
       </div>
     </div>
@@ -75,7 +98,7 @@ function NoteEntry({ e }: { e: Entry }) {
     >
       <div className="whitespace-pre-wrap">{e.text}</div>
       <span className="note-meta">
-        {e.author ? `— ${e.author}, ` : "— "}
+        {displayAuthor(e.author) ? `— ${displayAuthor(e.author)}, ` : "— "}
         {formatTime(e.ts)}
       </span>
     </div>
@@ -107,7 +130,7 @@ export default async function Home() {
           className="mt-6 font-hand text-xl"
           style={{ color: "var(--cornstalk-deep)" }}
         >
-          a little diary
+          {tagline}
         </p>
       </header>
 
