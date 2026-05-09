@@ -97,7 +97,7 @@ export function PullToRefresh() {
         paddingBottom: 8,
         height: pull + (refreshing ? 0 : 0),
         pointerEvents: "none",
-        zIndex: 200,
+        zIndex: 50,
         transition: active.current ? "none" : "height 0.25s ease-out",
         opacity,
       }}
