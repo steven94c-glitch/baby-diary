@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Caveat, Lora, Alfa_Slab_One, Bagel_Fat_One } from "next/font/google";
 import "./globals.css";
 import { RegisterSW } from "./components/RegisterSW";
+import { PullToRefresh } from "./components/PullToRefresh";
 
 const babyName = process.env.BABY_NAME ?? "Baby";
 
@@ -52,6 +53,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <div className="frame-right" />
         </div>
         <RegisterSW />
+        <PullToRefresh />
         {children}
       </body>
     </html>
