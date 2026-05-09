@@ -95,25 +95,6 @@ export function EnableNotifications() {
     }
   };
 
-  const disable = async () => {
-    setState("pending");
-    try {
-      const reg = await navigator.serviceWorker.ready;
-      const sub = await reg.pushManager.getSubscription();
-      if (sub) {
-        await fetch("/api/unsubscribe", {
-          method: "POST",
-          headers: { "content-type": "application/json" },
-          body: JSON.stringify({ endpoint: sub.endpoint }),
-        });
-        await sub.unsubscribe();
-      }
-      setState("ready");
-    } catch {
-      setState("error");
-    }
-  };
-
   if (state === "loading" || state === "unsupported" || state === "subscribed") return null;
 
   const wrap = (children: React.ReactNode) => (
@@ -132,14 +113,6 @@ export function EnableNotifications() {
       <p className="font-hand">
         Notifications are blocked. To turn them on, open Settings → Notifications → this app.
       </p>
-    );
-  }
-  if (state === "subscribed") {
-    return wrap(
-      <div className="flex items-center justify-between gap-3">
-        <span className="font-hand">✓ You&apos;ll be notified for new posts</span>
-        <button onClick={disable} className="notify-link font-hand">turn off</button>
-      </div>
     );
   }
   return wrap(
