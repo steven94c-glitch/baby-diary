@@ -4,22 +4,6 @@ import { useState, useTransition, useEffect, useRef } from "react";
 import { postComment } from "../actions";
 import type { Entry, Comment } from "@/lib/entries";
 
-function formatTime(ts: number) {
-  return new Date(ts).toLocaleTimeString("en-US", {
-    hour: "numeric",
-    minute: "2-digit",
-    timeZone: "America/New_York",
-  });
-}
-
-function formatShortDate(ts: number) {
-  return new Date(ts).toLocaleDateString("en-US", {
-    month: "short",
-    day: "numeric",
-    timeZone: "America/New_York",
-  });
-}
-
 export function Polaroid({
   entry,
   caption,
@@ -87,7 +71,7 @@ export function Polaroid({
         <div className="polaroid back">
           <div className="polaroid-back-inner">
             <div className="polaroid-back-header">
-              <span className="font-hand text-xl">notes from family</span>
+              <span className="font-hand text-xl">love notes</span>
               <button
                 type="button"
                 onClick={() => setFlipped(false)}
@@ -106,7 +90,6 @@ export function Polaroid({
                   <li key={c.id}>
                     <span className="comment-author">{c.author}:</span>{" "}
                     <span className="comment-text">{c.text}</span>
-                    <span className="comment-when">{formatShortDate(c.ts)} · {formatTime(c.ts)}</span>
                   </li>
                 ))
               )}
