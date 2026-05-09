@@ -25,7 +25,7 @@ export default async function Login({ searchParams }: { searchParams: Promise<{ 
   const { error } = await searchParams;
   return (
     <main className="mx-auto flex min-h-screen max-w-sm flex-col justify-center px-6">
-      <h1 className="font-hand text-5xl" style={{ color: "var(--ink)" }}>
+      <h1 className="font-block uppercase text-4xl" style={{ color: "var(--ink)" }}>
         {babyName}
       </h1>
       <p className="mt-2 font-hand text-lg" style={{ color: "var(--cornstalk-deep)" }}>

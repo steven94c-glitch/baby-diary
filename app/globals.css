@@ -5,8 +5,10 @@
 :root {
   --cottage: #f7f1e5;
   --cottage-deep: #ede4d0;
-  --cornstalk: #e8d5a2;
-  --cornstalk-deep: #d6bf83;
+  --cornstalk: #a8b498;
+  --cornstalk-deep: #8a9879;
+  --cornstalk-soft: #d6dcc6;
+  --sticky: #f4dd87;
   --ink: #3a3027;
   --muted: #8a7e6e;
   --paper: #fffdf7;
@@ -22,6 +24,32 @@ html, body {
 
 .font-hand {
   font-family: var(--font-hand), "Bradley Hand", "Comic Sans MS", cursive;
+}
+.font-block {
+  font-family: var(--font-block), "Arial Black", Impact, sans-serif;
+  letter-spacing: 0.01em;
+}
+
+/* ------- Site frame / nursery trim ------- */
+.frame {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  border: 12px solid var(--cornstalk);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.45),
+    inset 0 0 0 14px var(--cornstalk),
+    inset 0 0 0 16px var(--cornstalk-soft);
+  z-index: 100;
+}
+@media (min-width: 768px) {
+  .frame {
+    border-width: 18px;
+    box-shadow:
+      inset 0 0 0 1px rgba(255, 255, 255, 0.45),
+      inset 0 0 0 20px var(--cornstalk),
+      inset 0 0 0 23px var(--cornstalk-soft);
+  }
 }
 
 /* subtle linen-y texture on the page background */
@@ -77,7 +105,7 @@ main {
 
 /* ------- Sticky note ------- */
 .sticky {
-  background: var(--cornstalk);
+  background: var(--sticky);
   padding: 28px 22px 22px;
   font-family: var(--font-hand), cursive;
   font-size: 1.4rem;

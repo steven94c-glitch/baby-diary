@@ -92,13 +92,16 @@ export default async function Home() {
   }
 
   return (
-    <main className="mx-auto max-w-2xl px-5 pb-32 pt-14">
+    <main className="mx-auto max-w-2xl px-8 pb-32 pt-20 sm:px-10 sm:pt-24">
       <header className="mb-14 text-center">
-        <h1 className="font-hand text-6xl leading-none" style={{ color: "var(--ink)" }}>
+        <h1
+          className="font-block uppercase leading-[0.95] text-5xl sm:text-7xl"
+          style={{ color: "var(--ink)" }}
+        >
           {babyName}
         </h1>
         <p
-          className="mt-3 font-hand text-xl"
+          className="mt-4 font-hand text-xl"
           style={{ color: "var(--cornstalk-deep)" }}
         >
           a little diary
