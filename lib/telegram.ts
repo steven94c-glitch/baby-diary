@@ -49,15 +49,25 @@ export async function downloadFile(file_id: string): Promise<{ buffer: ArrayBuff
   return { buffer, contentType, ext };
 }
 
-export async function sendMessage(chat_id: number, text: string, reply_to?: number): Promise<void> {
-  await fetch(`${TG_API}/bot${token()}/sendMessage`, {
-    method: "POST",
-    headers: { "content-type": "application/json" },
-    body: JSON.stringify({
-      chat_id,
-      text,
-      reply_to_message_id: reply_to,
-      disable_notification: true,
-    }),
-  });
+export async function sendMessage(
+  chat_id: number,
+  text: string,
+  reply_to?: number
+): Promise<number | undefined> {
+  try {
+    const res = await fetch(`${TG_API}/bot${token()}/sendMessage`, {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({
+        chat_id,
+        text,
+        reply_to_message_id: reply_to,
+        disable_notification: true,
+      }),
+    });
+    const json = (await res.json()) as { ok: boolean; result?: { message_id: number } };
+    return json.result?.message_id;
+  } catch {
+    return undefined;
+  }
 }

@@ -21,6 +21,7 @@ export type Entry = {
   text: string;
   media: Media[];
   comments?: Comment[];
+  botReplyId?: number;
 };
 
 const ENTRIES_KEY = "entries.json";
@@ -97,4 +98,24 @@ export async function deleteEntry(id: string): Promise<boolean> {
   }
   await writeEntries(current.filter((e) => e.id !== id));
   return true;
+}
+
+export async function deleteEntryByBotReply(
+  chatId: number,
+  botReplyId: number
+): Promise<boolean> {
+  const current = await readEntries();
+  const target = current.find(
+    (e) => e.botReplyId === botReplyId && e.id.startsWith(`${chatId}-`)
+  );
+  if (!target) return false;
+  return deleteEntry(target.id);
+}
+
+export async function setBotReplyId(entryId: string, botReplyId: number): Promise<void> {
+  const current = await readEntries();
+  const idx = current.findIndex((e) => e.id === entryId);
+  if (idx === -1) return;
+  current[idx] = { ...current[idx], botReplyId };
+  await writeEntries(current);
 }

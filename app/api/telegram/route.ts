@@ -1,6 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
 import { put } from "@vercel/blob";
-import { appendEntry, deleteEntry, updateEntryText, type Entry, type Media } from "@/lib/entries";
+import {
+  appendEntry,
+  deleteEntry,
+  deleteEntryByBotReply,
+  setBotReplyId,
+  updateEntryText,
+  type Entry,
+  type Media,
+} from "@/lib/entries";
 import { downloadFile, sendMessage, type TgMessage, type TgUpdate } from "@/lib/telegram";
 import { sendPushToAll } from "@/lib/subscriptions";
 
@@ -48,8 +56,19 @@ async function handleNewMessage(msg: TgMessage): Promise<void> {
       await sendMessage(msg.chat.id, "Reply to the message you want to delete with /delete.", msg.message_id);
       return;
     }
-    const ok = await deleteEntry(entryIdFor(msg.chat.id, target.message_id));
-    await sendMessage(msg.chat.id, ok ? "Deleted ✓" : "Couldn't find that entry to delete.", msg.message_id);
+    const directId = entryIdFor(msg.chat.id, target.message_id);
+    console.log(`[delete] reply target msg_id=${target.message_id} entryId=${directId}`);
+    let ok = await deleteEntry(directId);
+    if (!ok) {
+      console.log(`[delete] no direct match, trying botReplyId=${target.message_id}`);
+      ok = await deleteEntryByBotReply(msg.chat.id, target.message_id);
+    }
+    console.log(`[delete] result=${ok}`);
+    await sendMessage(
+      msg.chat.id,
+      ok ? "Deleted ✓" : "Couldn't find that entry — reply to the original photo/note (or my Saved ✓ message).",
+      msg.message_id
+    );
     return;
   }
 
@@ -89,7 +108,8 @@ async function handleNewMessage(msg: TgMessage): Promise<void> {
   };
 
   await appendEntry(entry);
-  await sendMessage(msg.chat.id, "Saved ✓", msg.message_id);
+  const botReplyId = await sendMessage(msg.chat.id, "Saved ✓", msg.message_id);
+  if (botReplyId) await setBotReplyId(entry.id, botReplyId);
 
   const author = msg.from?.first_name;
   const preview = text ? text.slice(0, 80) : media.length > 0 ? "shared a new photo" : "added a note";
