@@ -29,6 +29,32 @@ html, body {
   font-family: var(--font-block), "Arial Black", Impact, sans-serif;
   letter-spacing: 0.01em;
 }
+.font-bubble {
+  font-family: var(--font-bubble), "Cooper Black", "Arial Black", sans-serif;
+}
+
+/* ------- Daisy-filled bubble title ------- */
+.daisy-title {
+  display: inline-block;
+  font-family: var(--font-bubble), "Cooper Black", sans-serif;
+  font-weight: 400;
+  line-height: 0.95;
+  letter-spacing: 0.01em;
+  background-color: #d6dcc6;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 80' width='80' height='80'><g transform='translate(20 22)'><circle cx='0' cy='-9' r='5' fill='%23f7f1e5'/><circle cx='8.6' cy='-2.8' r='5' fill='%23f7f1e5'/><circle cx='5.3' cy='7.3' r='5' fill='%23f7f1e5'/><circle cx='-5.3' cy='7.3' r='5' fill='%23f7f1e5'/><circle cx='-8.6' cy='-2.8' r='5' fill='%23f7f1e5'/><circle cx='0' cy='0' r='3.5' fill='%23f4dd87'/></g><g transform='translate(58 56)'><circle cx='0' cy='-7' r='4' fill='%23f7f1e5'/><circle cx='6.7' cy='-2.2' r='4' fill='%23f7f1e5'/><circle cx='4.1' cy='5.7' r='4' fill='%23f7f1e5'/><circle cx='-4.1' cy='5.7' r='4' fill='%23f7f1e5'/><circle cx='-6.7' cy='-2.2' r='4' fill='%23f7f1e5'/><circle cx='0' cy='0' r='2.8' fill='%23f4dd87'/></g></svg>");
+  background-size: 70px 70px;
+  background-repeat: repeat;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  filter:
+    drop-shadow(0 1px 0 #8a9879)
+    drop-shadow(0 2px 0 #8a9879)
+    drop-shadow(0 3px 0 #8a9879)
+    drop-shadow(0 4px 0 #8a9879)
+    drop-shadow(0 5px 0 #8a9879)
+    drop-shadow(2px 8px 6px rgba(58, 48, 39, 0.25));
+}
 
 /* ------- Site frame / nursery trim ------- */
 .frame {

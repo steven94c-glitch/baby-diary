@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Caveat, Lora, Alfa_Slab_One } from "next/font/google";
+import { Caveat, Lora, Alfa_Slab_One, Bagel_Fat_One } from "next/font/google";
 import "./globals.css";
 
 const babyName = process.env.BABY_NAME ?? "Baby";
@@ -20,6 +20,12 @@ const alfa = Alfa_Slab_One({
   variable: "--font-block",
   display: "swap",
 });
+const bagel = Bagel_Fat_One({
+  subsets: ["latin"],
+  weight: "400",
+  variable: "--font-bubble",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   title: `${babyName}'s Diary`,
@@ -29,7 +35,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${caveat.variable} ${lora.variable} ${alfa.variable}`}>
+    <html lang="en" className={`${caveat.variable} ${lora.variable} ${alfa.variable} ${bagel.variable}`}>
       <body className="antialiased">
         <div className="frame" aria-hidden="true" />
         {children}

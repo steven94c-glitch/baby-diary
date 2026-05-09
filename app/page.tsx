@@ -93,15 +93,16 @@ export default async function Home() {
 
   return (
     <main className="mx-auto max-w-2xl px-8 pb-32 pt-20 sm:px-10 sm:pt-24">
-      <header className="mb-14 text-center">
-        <h1
-          className="font-block uppercase leading-[0.95] text-5xl sm:text-7xl"
-          style={{ color: "var(--ink)" }}
-        >
-          {babyName}
+      <header className="mb-16 text-center">
+        <h1 className="daisy-title uppercase text-6xl sm:text-8xl">
+          {babyName.split(" ").map((part, i) => (
+            <span key={i} className="block">
+              {part}
+            </span>
+          ))}
         </h1>
         <p
-          className="mt-4 font-hand text-xl"
+          className="mt-6 font-hand text-xl"
           style={{ color: "var(--cornstalk-deep)" }}
         >
           a little diary
