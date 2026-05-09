@@ -371,6 +371,38 @@ main {
   color: var(--muted);
 }
 
+/* ------- Enable notifications card ------- */
+.notify-card {
+  margin: 32px auto 0;
+  max-width: 24rem;
+  padding: 14px 18px;
+  background: var(--paper);
+  border: 1px solid var(--cornstalk-soft);
+  border-radius: 6px;
+  box-shadow: 0 4px 12px -8px rgba(58, 48, 39, 0.2);
+  text-align: center;
+  font-size: 1.05rem;
+  color: var(--ink);
+}
+.notify-button {
+  background: var(--cornstalk);
+  color: var(--ink);
+  border: 0;
+  border-radius: 4px;
+  padding: 8px 16px;
+  font-size: 1.05rem;
+  cursor: pointer;
+}
+.notify-button:disabled { opacity: 0.6; cursor: not-allowed; }
+.notify-link {
+  background: transparent;
+  border: 0;
+  color: var(--cornstalk-deep);
+  text-decoration: underline;
+  cursor: pointer;
+  font-size: 0.95rem;
+}
+
 /* ------- Day heading ------- */
 .day-heading {
   font-family: var(--font-hand), cursive;

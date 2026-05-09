@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Caveat, Lora, Alfa_Slab_One, Bagel_Fat_One } from "next/font/google";
 import "./globals.css";
+import { RegisterSW } from "./components/RegisterSW";
 
 const babyName = process.env.BABY_NAME ?? "Baby";
 
@@ -49,6 +50,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <div className="frame-left" />
           <div className="frame-right" />
         </div>
+        <RegisterSW />
         {children}
       </body>
     </html>

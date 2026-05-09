@@ -2,6 +2,9 @@ import { NextRequest, NextResponse } from "next/server";
 import { put } from "@vercel/blob";
 import { appendEntry, deleteEntry, updateEntryText, type Entry, type Media } from "@/lib/entries";
 import { downloadFile, sendMessage, type TgMessage, type TgUpdate } from "@/lib/telegram";
+import { sendPushToAll } from "@/lib/subscriptions";
+
+const babyName = process.env.BABY_NAME ?? "Baby";
 
 export const runtime = "nodejs";
 export const maxDuration = 60;
@@ -87,6 +90,19 @@ async function handleNewMessage(msg: TgMessage): Promise<void> {
 
   await appendEntry(entry);
   await sendMessage(msg.chat.id, "Saved ✓", msg.message_id);
+
+  const author = msg.from?.first_name;
+  const preview = text ? text.slice(0, 80) : media.length > 0 ? "shared a new photo" : "added a note";
+  try {
+    await sendPushToAll({
+      title: `${babyName}'s diary`,
+      body: author ? `${author}: ${preview}` : preview,
+      url: "/",
+      tag: `entry-${entry.id}`,
+    });
+  } catch (err) {
+    console.error("push fanout error:", err);
+  }
 }
 
 async function handleEditedMessage(msg: TgMessage): Promise<void> {

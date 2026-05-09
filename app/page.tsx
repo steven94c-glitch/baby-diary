@@ -1,5 +1,6 @@
 import { readEntries, type Entry } from "@/lib/entries";
 import { Polaroid } from "./components/Polaroid";
+import { EnableNotifications } from "./components/EnableNotifications";
 
 export const dynamic = "force-dynamic";
 
@@ -109,6 +110,8 @@ export default async function Home() {
           {tagline}
         </p>
       </header>
+
+      <EnableNotifications />
 
       {entries.length === 0 ? (
         <p className="mt-24 text-center font-hand text-xl" style={{ color: "var(--muted)" }}>
