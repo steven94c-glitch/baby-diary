@@ -1,4 +1,4 @@
-import { put, list } from "@vercel/blob";
+import { put, list, del } from "@vercel/blob";
 
 export type Media = {
   url: string;
@@ -38,10 +38,15 @@ export async function readEntries(): Promise<Entry[]> {
 export async function appendEntry(entry: Entry): Promise<void> {
   const current = await readEntries();
   const next = [entry, ...current];
+  const existing = await findEntriesBlob();
+  if (existing) {
+    try {
+      await del(existing.url);
+    } catch {}
+  }
   await put(ENTRIES_KEY, JSON.stringify(next, null, 2), {
     access: "public",
     contentType: "application/json",
     addRandomSuffix: false,
-    allowOverwrite: true,
   });
 }
