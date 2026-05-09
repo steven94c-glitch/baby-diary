@@ -1,4 +1,5 @@
 import { readEntries, type Entry } from "@/lib/entries";
+import { Polaroid } from "./components/Polaroid";
 
 export const dynamic = "force-dynamic";
 
@@ -58,34 +59,9 @@ function noteVariantFor(id: string): "sticky" | "notepad" | "notecard" {
 
 function PolaroidEntry({ e }: { e: Entry }) {
   const tilt = tiltFor(e.id);
-  return (
-    <div
-      className="polaroid mx-auto w-[88%] max-w-md sm:w-full"
-      style={{ transform: `rotate(${tilt}deg)` }}
-    >
-      <div className="polaroid-photo">
-        {e.media.map((m, i) =>
-          m.kind === "video" ? (
-            <video key={i} src={m.url} controls playsInline />
-          ) : (
-            <a key={i} href={m.url} target="_blank" rel="noopener noreferrer">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={m.url} alt="" loading="lazy" />
-            </a>
-          )
-        )}
-      </div>
-      {e.text ? (
-        <div className="polaroid-caption">{e.text}</div>
-      ) : (
-        <div style={{ height: 18 }} />
-      )}
-      <div className="polaroid-meta">
-        {displayAuthor(e.author) ? `${displayAuthor(e.author)} · ` : ""}
-        {formatTime(e.ts)}
-      </div>
-    </div>
-  );
+  const author = displayAuthor(e.author);
+  const meta = `${author ? `${author} · ` : ""}${formatTime(e.ts)}`;
+  return <Polaroid entry={e} caption={e.text} meta={meta} tilt={tilt} />;
 }
 
 function NoteEntry({ e }: { e: Entry }) {

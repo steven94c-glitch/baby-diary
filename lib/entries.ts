@@ -7,12 +7,20 @@ export type Media = {
   kind: "photo" | "video";
 };
 
+export type Comment = {
+  id: string;
+  ts: number;
+  author: string;
+  text: string;
+};
+
 export type Entry = {
   id: string;
   ts: number;
   author?: string;
   text: string;
   media: Media[];
+  comments?: Comment[];
 };
 
 const ENTRIES_KEY = "entries.json";
@@ -64,6 +72,16 @@ export async function updateEntryText(id: string, text: string): Promise<boolean
   const idx = current.findIndex((e) => e.id === id);
   if (idx === -1) return false;
   current[idx] = { ...current[idx], text };
+  await writeEntries(current);
+  return true;
+}
+
+export async function addComment(entryId: string, comment: Comment): Promise<boolean> {
+  const current = await readEntries();
+  const idx = current.findIndex((e) => e.id === entryId);
+  if (idx === -1) return false;
+  const existing = current[idx].comments ?? [];
+  current[idx] = { ...current[idx], comments: [...existing, comment] };
   await writeEntries(current);
   return true;
 }
