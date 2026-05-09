@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { put } from "@vercel/blob";
-import { appendEntry, type Entry, type Media } from "@/lib/entries";
+import { appendEntry, deleteEntry, updateEntryText, type Entry, type Media } from "@/lib/entries";
 import { downloadFile, sendMessage, type TgMessage, type TgUpdate } from "@/lib/telegram";
 
 export const runtime = "nodejs";
@@ -24,17 +24,34 @@ function allowedChatId(): number | null {
   return Number.isFinite(n) ? n : null;
 }
 
-async function handleMessage(msg: TgMessage): Promise<void> {
-  const chatOk = allowedChatId();
-  if (chatOk !== null && msg.chat.id !== chatOk) return;
+function entryIdFor(chatId: number, messageId: number) {
+  return `${chatId}-${messageId}`;
+}
 
+function isAuthorized(msg: TgMessage): boolean {
+  const chatOk = allowedChatId();
+  if (chatOk !== null && msg.chat.id !== chatOk) return false;
   const allowed = allowedUserIds();
-  if (allowed.size > 0 && (!msg.from || !allowed.has(msg.from.id))) {
-    await sendMessage(msg.chat.id, "Sorry — you're not on the post list for this diary.", msg.message_id);
+  if (allowed.size > 0 && (!msg.from || !allowed.has(msg.from.id))) return false;
+  return true;
+}
+
+async function handleNewMessage(msg: TgMessage): Promise<void> {
+  const text = (msg.caption ?? msg.text ?? "").trim();
+
+  if (text.startsWith("/delete")) {
+    const target = msg.reply_to_message;
+    if (!target) {
+      await sendMessage(msg.chat.id, "Reply to the message you want to delete with /delete.", msg.message_id);
+      return;
+    }
+    const ok = await deleteEntry(entryIdFor(msg.chat.id, target.message_id));
+    await sendMessage(msg.chat.id, ok ? "Deleted ✓" : "Couldn't find that entry to delete.", msg.message_id);
     return;
   }
 
-  const text = (msg.caption ?? msg.text ?? "").trim();
+  if (text.startsWith("/")) return;
+
   const media: Media[] = [];
 
   if (msg.photo && msg.photo.length > 0) {
@@ -61,7 +78,7 @@ async function handleMessage(msg: TgMessage): Promise<void> {
   if (media.length === 0 && !text) return;
 
   const entry: Entry = {
-    id: `${msg.chat.id}-${msg.message_id}`,
+    id: entryIdFor(msg.chat.id, msg.message_id),
     ts: msg.date * 1000,
     author: msg.from?.first_name ?? msg.from?.username,
     text,
@@ -70,6 +87,15 @@ async function handleMessage(msg: TgMessage): Promise<void> {
 
   await appendEntry(entry);
   await sendMessage(msg.chat.id, "Saved ✓", msg.message_id);
+}
+
+async function handleEditedMessage(msg: TgMessage): Promise<void> {
+  const text = (msg.caption ?? msg.text ?? "").trim();
+  if (text.startsWith("/")) return;
+  const ok = await updateEntryText(entryIdFor(msg.chat.id, msg.message_id), text);
+  if (ok) {
+    await sendMessage(msg.chat.id, "Updated ✓", msg.message_id);
+  }
 }
 
 export async function POST(req: NextRequest) {
@@ -86,15 +112,28 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ ok: false, error: "bad json" }, { status: 400 });
   }
 
-  const msg = update.message ?? update.channel_post;
+  const newMsg = update.message ?? update.channel_post;
+  const editedMsg = update.edited_message ?? update.edited_channel_post;
+  const msg = newMsg ?? editedMsg;
   if (!msg) return NextResponse.json({ ok: true });
 
+  if (!isAuthorized(msg)) {
+    if (newMsg) {
+      await sendMessage(msg.chat.id, "Sorry — you're not on the post list for this diary.", msg.message_id);
+    }
+    return NextResponse.json({ ok: true });
+  }
+
   try {
-    await handleMessage(msg);
+    if (editedMsg) {
+      await handleEditedMessage(editedMsg);
+    } else if (newMsg) {
+      await handleNewMessage(newMsg);
+    }
   } catch (err) {
     console.error("telegram handler error:", err);
     try {
-      await sendMessage(msg.chat.id, "Something went wrong saving that — try again?", msg.message_id);
+      await sendMessage(msg.chat.id, "Something went wrong — try again?", msg.message_id);
     } catch {}
   }
 

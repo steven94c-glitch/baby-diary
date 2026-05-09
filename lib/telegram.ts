@@ -13,14 +13,22 @@ export type TgChat = { id: number; type: string; title?: string };
 export type TgMessage = {
   message_id: number;
   date: number;
+  edit_date?: number;
   from?: TgUser;
   chat: TgChat;
   text?: string;
   caption?: string;
   photo?: TgPhotoSize[];
   video?: TgVideo;
+  reply_to_message?: TgMessage;
 };
-export type TgUpdate = { update_id: number; message?: TgMessage; channel_post?: TgMessage };
+export type TgUpdate = {
+  update_id: number;
+  message?: TgMessage;
+  channel_post?: TgMessage;
+  edited_message?: TgMessage;
+  edited_channel_post?: TgMessage;
+};
 
 export async function getFilePath(file_id: string): Promise<string> {
   const res = await fetch(`${TG_API}/bot${token()}/getFile?file_id=${encodeURIComponent(file_id)}`);

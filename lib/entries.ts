@@ -40,18 +40,43 @@ export async function readEntries(): Promise<Entry[]> {
   }
 }
 
-export async function appendEntry(entry: Entry): Promise<void> {
-  const current = await readEntries();
-  const next = [entry, ...current];
+async function writeEntries(entries: Entry[]): Promise<void> {
   const existing = await findEntriesBlob();
   if (existing) {
     try {
       await del(existing.url);
     } catch {}
   }
-  await put(ENTRIES_KEY, JSON.stringify(next, null, 2), {
+  await put(ENTRIES_KEY, JSON.stringify(entries, null, 2), {
     access: "public",
     contentType: "application/json",
     addRandomSuffix: false,
   });
+}
+
+export async function appendEntry(entry: Entry): Promise<void> {
+  const current = await readEntries();
+  await writeEntries([entry, ...current]);
+}
+
+export async function updateEntryText(id: string, text: string): Promise<boolean> {
+  const current = await readEntries();
+  const idx = current.findIndex((e) => e.id === id);
+  if (idx === -1) return false;
+  current[idx] = { ...current[idx], text };
+  await writeEntries(current);
+  return true;
+}
+
+export async function deleteEntry(id: string): Promise<boolean> {
+  const current = await readEntries();
+  const target = current.find((e) => e.id === id);
+  if (!target) return false;
+  for (const m of target.media) {
+    try {
+      await del(m.url);
+    } catch {}
+  }
+  await writeEntries(current.filter((e) => e.id !== id));
+  return true;
 }
