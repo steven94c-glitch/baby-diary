@@ -76,11 +76,17 @@ export async function sendPushToAll(payload: {
   body: string;
   url?: string;
   tag?: string;
-}): Promise<void> {
-  if (!configure()) return;
+}): Promise<{ total: number; ok: number; failed: number; dead: number }> {
+  if (!configure()) {
+    console.warn("[push] VAPID keys not configured — skipping fanout");
+    return { total: 0, ok: 0, failed: 0, dead: 0 };
+  }
   const subs = await readSubscriptions();
-  if (subs.length === 0) return;
+  console.log(`[push] sending to ${subs.length} subscription(s)`);
+  if (subs.length === 0) return { total: 0, ok: 0, failed: 0, dead: 0 };
   const dead: string[] = [];
+  let ok = 0;
+  let failed = 0;
   await Promise.allSettled(
     subs.map(async (sub) => {
       try {
@@ -88,10 +94,16 @@ export async function sendPushToAll(payload: {
           { endpoint: sub.endpoint, keys: sub.keys },
           JSON.stringify(payload)
         );
+        ok++;
       } catch (err: unknown) {
         const status = (err as { statusCode?: number }).statusCode;
-        if (status === 404 || status === 410) dead.push(sub.endpoint);
-        else console.error("push error:", err);
+        const body = (err as { body?: string }).body;
+        if (status === 404 || status === 410) {
+          dead.push(sub.endpoint);
+        } else {
+          failed++;
+          console.error(`[push] error status=${status} body=${body}:`, err);
+        }
       }
     })
   );
@@ -99,4 +111,6 @@ export async function sendPushToAll(payload: {
     const next = subs.filter((s) => !dead.includes(s.endpoint));
     await writeSubscriptions(next);
   }
+  console.log(`[push] done: ok=${ok} failed=${failed} dead=${dead.length}`);
+  return { total: subs.length, ok, failed, dead: dead.length };
 }
