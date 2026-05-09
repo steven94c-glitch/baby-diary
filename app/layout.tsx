@@ -45,7 +45,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" className={`${caveat.variable} ${lora.variable} ${alfa.variable} ${bagel.variable}`}>
       <body className="antialiased">
-        <div className="frame" aria-hidden="true" />
+        <div className="frame" aria-hidden="true">
+          <div className="frame-left" />
+          <div className="frame-right" />
+        </div>
         {children}
       </body>
     </html>

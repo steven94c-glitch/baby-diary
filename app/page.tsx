@@ -37,7 +37,7 @@ function PolaroidEntry({ e }: { e: Entry }) {
   const tilt = tiltFor(e.id);
   return (
     <div
-      className="polaroid mx-auto w-full max-w-md"
+      className="polaroid mx-auto w-[88%] max-w-md sm:w-full"
       style={{ transform: `rotate(${tilt}deg)` }}
     >
       <div className="polaroid-photo">
@@ -70,7 +70,7 @@ function NoteEntry({ e }: { e: Entry }) {
   const variant = noteVariantFor(e.id);
   return (
     <div
-      className={`mx-auto w-full max-w-sm ${variant}`}
+      className={`mx-auto w-[86%] max-w-sm sm:w-full ${variant}`}
       style={{ transform: `rotate(${tilt}deg)` }}
     >
       <div className="whitespace-pre-wrap">{e.text}</div>
@@ -94,7 +94,7 @@ export default async function Home() {
   }
 
   return (
-    <main className="mx-auto max-w-2xl px-5 pb-24 pt-16 sm:px-10 sm:pt-24">
+    <main className="mx-auto max-w-2xl px-4 pb-28 pt-24 sm:px-10 sm:pt-28">
       <header className="mb-16 text-center">
         <h1 className="daisy-title uppercase text-7xl sm:text-8xl">
           {babyName.split(" ").map((part, i) => (
