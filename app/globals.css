@@ -110,17 +110,21 @@ body {
 }
 
 /* In standalone (home-screen PWA), mirror top + bottom strip heights so the
-   frame looks symmetric — the home-indicator inset is smaller than the
-   status-bar inset, so we use the larger top inset for both. */
+   frame looks symmetric. The status-bar inset is bigger than the
+   home-indicator inset, so we add it to the bottom strip too. */
 @media (display-mode: standalone) {
-  .frame::before,
-  .frame::after {
+  .frame::before {
     height: calc(env(safe-area-inset-top, 0px) + 14px);
   }
+  .frame::after {
+    height: calc(env(safe-area-inset-top, 0px) + env(safe-area-inset-bottom, 0px) + 14px);
+  }
   @media (min-width: 768px) {
-    .frame::before,
-    .frame::after {
+    .frame::before {
       height: calc(env(safe-area-inset-top, 0px) + 22px);
+    }
+    .frame::after {
+      height: calc(env(safe-area-inset-top, 0px) + env(safe-area-inset-bottom, 0px) + 22px);
     }
   }
 }
