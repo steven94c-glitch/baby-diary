@@ -21,6 +21,9 @@ html, body {
   color: var(--ink);
   font-family: var(--font-serif), ui-serif, Georgia, serif;
 }
+body {
+  overflow-x: hidden;
+}
 
 .font-hand {
   font-family: var(--font-hand), "Bradley Hand", "Comic Sans MS", cursive;
@@ -61,11 +64,11 @@ html, body {
   position: fixed;
   inset: 0;
   pointer-events: none;
-  border: 12px solid var(--cornstalk);
+  border: 8px solid var(--cornstalk);
   box-shadow:
     inset 0 0 0 1px rgba(255, 255, 255, 0.45),
-    inset 0 0 0 14px var(--cornstalk),
-    inset 0 0 0 16px var(--cornstalk-soft);
+    inset 0 0 0 10px var(--cornstalk),
+    inset 0 0 0 12px var(--cornstalk-soft);
   z-index: 100;
 }
 @media (min-width: 768px) {
@@ -97,11 +100,14 @@ main {
 /* ------- Polaroid ------- */
 .polaroid {
   background: var(--paper);
-  padding: 14px 14px 0;
+  padding: 10px 10px 0;
   box-shadow:
     0 1px 1px rgba(0, 0, 0, 0.06),
     0 8px 24px -8px rgba(58, 48, 39, 0.25);
   border-radius: 2px;
+}
+@media (min-width: 640px) {
+  .polaroid { padding: 14px 14px 0; }
 }
 .polaroid-photo {
   background: #000;
@@ -114,10 +120,10 @@ main {
   height: auto;
 }
 .polaroid-caption {
-  padding: 14px 6px 22px;
+  padding: 12px 6px 16px;
   text-align: center;
   font-family: var(--font-hand), cursive;
-  font-size: 1.45rem;
+  font-size: 1.5rem;
   line-height: 1.2;
   color: var(--ink);
 }
@@ -126,7 +132,7 @@ main {
   font-family: var(--font-hand), cursive;
   font-size: 0.95rem;
   color: var(--muted);
-  padding-bottom: 18px;
+  padding-bottom: 14px;
 }
 
 /* ------- Sticky note ------- */

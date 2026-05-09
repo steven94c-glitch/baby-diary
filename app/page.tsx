@@ -45,8 +45,10 @@ function PolaroidEntry({ e }: { e: Entry }) {
           m.kind === "video" ? (
             <video key={i} src={m.url} controls playsInline />
           ) : (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img key={i} src={m.url} alt="" loading="lazy" />
+            <a key={i} href={m.url} target="_blank" rel="noopener noreferrer">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={m.url} alt="" loading="lazy" />
+            </a>
           )
         )}
       </div>
@@ -92,9 +94,9 @@ export default async function Home() {
   }
 
   return (
-    <main className="mx-auto max-w-2xl px-8 pb-32 pt-20 sm:px-10 sm:pt-24">
+    <main className="mx-auto max-w-2xl px-5 pb-24 pt-16 sm:px-10 sm:pt-24">
       <header className="mb-16 text-center">
-        <h1 className="daisy-title uppercase text-6xl sm:text-8xl">
+        <h1 className="daisy-title uppercase text-7xl sm:text-8xl">
           {babyName.split(" ").map((part, i) => (
             <span key={i} className="block">
               {part}
@@ -114,11 +116,11 @@ export default async function Home() {
           No entries yet — send a photo or note from the Telegram group.
         </p>
       ) : (
-        <div className="space-y-16">
+        <div className="space-y-12 sm:space-y-16">
           {Array.from(groups.entries()).map(([day, dayEntries]) => (
             <section key={day}>
-              <h2 className="day-heading mb-8">{day}</h2>
-              <ul className="space-y-12">
+              <h2 className="day-heading mb-6 sm:mb-8">{day}</h2>
+              <ul className="space-y-10 sm:space-y-12">
                 {dayEntries.map((e) => (
                   <li key={e.id}>
                     {e.media.length > 0 ? <PolaroidEntry e={e} /> : <NoteEntry e={e} />}

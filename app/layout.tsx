@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Caveat, Lora, Alfa_Slab_One, Bagel_Fat_One } from "next/font/google";
 import "./globals.css";
 
@@ -31,6 +31,14 @@ export const metadata: Metadata = {
   title: `${babyName}'s Diary`,
   description: `A little corner of the internet for ${babyName}.`,
   robots: { index: false, follow: false },
+  appleWebApp: { capable: true, statusBarStyle: "default", title: babyName },
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+  themeColor: "#a8b498",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
