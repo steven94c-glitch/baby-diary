@@ -109,6 +109,22 @@ body {
   .frame > .frame-right { width: 18px; }
 }
 
+/* In standalone (home-screen PWA), mirror top + bottom strip heights so the
+   frame looks symmetric — the home-indicator inset is smaller than the
+   status-bar inset, so we use the larger top inset for both. */
+@media (display-mode: standalone) {
+  .frame::before,
+  .frame::after {
+    height: calc(env(safe-area-inset-top, 0px) + 14px);
+  }
+  @media (min-width: 768px) {
+    .frame::before,
+    .frame::after {
+      height: calc(env(safe-area-inset-top, 0px) + 22px);
+    }
+  }
+}
+
 /* subtle linen-y texture on the page background */
 body::before {
   content: "";
