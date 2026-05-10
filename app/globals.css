@@ -105,7 +105,9 @@ body {
 }
 .frame::after {
   bottom: 0;
-  height: max(calc(env(safe-area-inset-bottom, 0px) + 10px), 24px);
+  /* Tall on mobile non-standalone so Safari's URL bar overlays the strip
+     rather than floating above content. PWA media query below overrides. */
+  height: max(calc(env(safe-area-inset-bottom, 0px) + 60px), 72px);
   background-image: linear-gradient(
     to top,
     transparent 0,
