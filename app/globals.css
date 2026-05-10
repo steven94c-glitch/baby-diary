@@ -77,12 +77,12 @@ body {
 }
 .frame::before {
   top: 0;
-  height: max(calc(env(safe-area-inset-top, 0px) + 10px), 52px);
+  height: max(calc(env(safe-area-inset-top, 0px) + 4px), 28px);
   border-bottom-width: 2px;
 }
 .frame::after {
   bottom: 0;
-  height: max(calc(env(safe-area-inset-bottom, 0px) + 10px), 18px);
+  height: max(calc(env(safe-area-inset-bottom, 0px) + 4px), 16px);
   border-top-width: 2px;
 }
 /* solid left + right strips */
@@ -103,8 +103,8 @@ body {
   border-left: 2px solid var(--cornstalk-soft);
 }
 @media (min-width: 768px) {
-  .frame::before { height: calc(env(safe-area-inset-top, 0px) + 18px); }
-  .frame::after { bottom: 0; height: calc(env(safe-area-inset-bottom, 0px) + 18px); }
+  .frame::before { height: max(calc(env(safe-area-inset-top, 0px) + 6px), 32px); }
+  .frame::after { bottom: 0; height: max(calc(env(safe-area-inset-bottom, 0px) + 6px), 22px); }
   .frame > .frame-left,
   .frame > .frame-right { width: 18px; }
 }
@@ -114,23 +114,17 @@ body {
    home-indicator inset, so we add it to the bottom strip too. */
 @media (display-mode: standalone) {
   .frame::before {
-    height: max(calc(env(safe-area-inset-top, 0px) + 14px), 60px);
+    height: max(calc(env(safe-area-inset-top, 0px) + 6px), 50px);
   }
   .frame::after {
-    height: max(
-      calc(env(safe-area-inset-top, 0px) + env(safe-area-inset-bottom, 0px) + 14px),
-      60px
-    );
+    height: max(calc(env(safe-area-inset-top, 0px) + 6px), 50px);
   }
   @media (min-width: 768px) {
     .frame::before {
-      height: max(calc(env(safe-area-inset-top, 0px) + 22px), 60px);
+      height: max(calc(env(safe-area-inset-top, 0px) + 10px), 50px);
     }
     .frame::after {
-      height: max(
-        calc(env(safe-area-inset-top, 0px) + env(safe-area-inset-bottom, 0px) + 22px),
-        60px
-      );
+      height: max(calc(env(safe-area-inset-top, 0px) + 10px), 50px);
     }
   }
 }
