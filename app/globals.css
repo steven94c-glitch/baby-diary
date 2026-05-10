@@ -73,6 +73,7 @@ body {
   left: 0;
   right: 0;
   background-color: var(--cornstalk);
+  z-index: 2;
 }
 .frame::before {
   top: 0;
@@ -126,6 +127,7 @@ body {
   bottom: 0;
   width: 12px;
   background-color: var(--cornstalk);
+  z-index: 1;
 }
 .frame > .frame-left {
   left: 0;
@@ -167,19 +169,30 @@ body {
 /* In standalone (home-screen PWA), mirror top + bottom strip heights so the
    frame looks symmetric. The status-bar inset is bigger than the
    home-indicator inset, so we add it to the bottom strip too. */
+/* In standalone PWA, match Safari mobile's top trim height and mirror it
+   to the bottom (using the larger of top/bottom insets so neither edge
+   leaks past the home indicator or notch). */
 @media (display-mode: standalone) {
   .frame::before {
-    height: max(calc(env(safe-area-inset-top, 0px) + 14px), 60px);
+    height: max(calc(env(safe-area-inset-top, 0px) + 10px), 36px);
   }
   .frame::after {
-    height: max(calc(env(safe-area-inset-top, 0px) + 14px), 60px);
+    height: max(
+      calc(env(safe-area-inset-top, 0px) + 10px),
+      calc(env(safe-area-inset-bottom, 0px) + 10px),
+      36px
+    );
   }
   @media (min-width: 768px) {
     .frame::before {
-      height: max(calc(env(safe-area-inset-top, 0px) + 18px), 60px);
+      height: max(calc(env(safe-area-inset-top, 0px) + 14px), 42px);
     }
     .frame::after {
-      height: max(calc(env(safe-area-inset-top, 0px) + 18px), 60px);
+      height: max(
+        calc(env(safe-area-inset-top, 0px) + 14px),
+        calc(env(safe-area-inset-bottom, 0px) + 14px),
+        42px
+      );
     }
   }
 }

@@ -5,7 +5,7 @@ import { EnableNotifications } from "./components/EnableNotifications";
 export const dynamic = "force-dynamic";
 
 const babyName = process.env.BABY_NAME ?? "Baby";
-const tagline = process.env.TAGLINE ?? "moments and milestones";
+const tagline = process.env.TAGLINE ?? "Moments and Milestones";
 const TZ = "America/New_York";
 
 function parseAliases(raw: string | undefined): Record<string, string> {
