@@ -64,49 +64,104 @@ body {
   pointer-events: none;
   z-index: 100;
 }
-/* solid top + bottom strips that cover safe areas */
+/* solid top + bottom strips that cover safe areas, with crown-molding profile
+   along the inner edge (where it meets the wall) */
 .frame::before,
 .frame::after {
   content: "";
   position: absolute;
   left: 0;
   right: 0;
-  background: var(--cornstalk);
-  border-color: var(--cornstalk-soft);
-  border-style: solid;
+  background-color: var(--cornstalk);
 }
 .frame::before {
   top: 0;
-  height: max(calc(env(safe-area-inset-top, 0px) + 4px), 28px);
-  border-bottom-width: 2px;
+  height: max(calc(env(safe-area-inset-top, 0px) + 10px), 36px);
+  background-image: linear-gradient(
+    to bottom,
+    transparent 0,
+    transparent calc(100% - 10px),
+    var(--cornstalk-deep) calc(100% - 10px),
+    var(--cornstalk-deep) calc(100% - 9px),
+    rgba(255, 255, 255, 0.45) calc(100% - 9px),
+    rgba(255, 255, 255, 0.45) calc(100% - 8px),
+    transparent calc(100% - 8px),
+    transparent calc(100% - 4px),
+    var(--cornstalk-deep) calc(100% - 4px),
+    var(--cornstalk-deep) calc(100% - 3px),
+    rgba(255, 255, 255, 0.5) calc(100% - 3px),
+    rgba(255, 255, 255, 0.5) calc(100% - 2px),
+    transparent calc(100% - 2px),
+    transparent calc(100% - 1px),
+    var(--cornstalk-deep) calc(100% - 1px)
+  );
 }
 .frame::after {
   bottom: 0;
-  height: max(calc(env(safe-area-inset-bottom, 0px) + 4px), 16px);
-  border-top-width: 2px;
+  height: max(calc(env(safe-area-inset-bottom, 0px) + 10px), 24px);
+  background-image: linear-gradient(
+    to top,
+    transparent 0,
+    transparent calc(100% - 10px),
+    var(--cornstalk-deep) calc(100% - 10px),
+    var(--cornstalk-deep) calc(100% - 9px),
+    rgba(255, 255, 255, 0.45) calc(100% - 9px),
+    rgba(255, 255, 255, 0.45) calc(100% - 8px),
+    transparent calc(100% - 8px),
+    transparent calc(100% - 4px),
+    var(--cornstalk-deep) calc(100% - 4px),
+    var(--cornstalk-deep) calc(100% - 3px),
+    rgba(255, 255, 255, 0.5) calc(100% - 3px),
+    rgba(255, 255, 255, 0.5) calc(100% - 2px),
+    transparent calc(100% - 2px),
+    transparent calc(100% - 1px),
+    var(--cornstalk-deep) calc(100% - 1px)
+  );
 }
-/* solid left + right strips */
+/* solid left + right strips with bead profile on inner edge */
 .frame > .frame-left,
 .frame > .frame-right {
   position: absolute;
   top: 0;
   bottom: 0;
-  width: 10px;
-  background: var(--cornstalk);
+  width: 12px;
+  background-color: var(--cornstalk);
 }
 .frame > .frame-left {
   left: 0;
-  border-right: 2px solid var(--cornstalk-soft);
+  background-image: linear-gradient(
+    to right,
+    transparent 0,
+    transparent calc(100% - 4px),
+    var(--cornstalk-deep) calc(100% - 4px),
+    var(--cornstalk-deep) calc(100% - 3px),
+    rgba(255, 255, 255, 0.5) calc(100% - 3px),
+    rgba(255, 255, 255, 0.5) calc(100% - 2px),
+    transparent calc(100% - 2px),
+    transparent calc(100% - 1px),
+    var(--cornstalk-deep) calc(100% - 1px)
+  );
 }
 .frame > .frame-right {
   right: 0;
-  border-left: 2px solid var(--cornstalk-soft);
+  background-image: linear-gradient(
+    to left,
+    transparent 0,
+    transparent calc(100% - 4px),
+    var(--cornstalk-deep) calc(100% - 4px),
+    var(--cornstalk-deep) calc(100% - 3px),
+    rgba(255, 255, 255, 0.5) calc(100% - 3px),
+    rgba(255, 255, 255, 0.5) calc(100% - 2px),
+    transparent calc(100% - 2px),
+    transparent calc(100% - 1px),
+    var(--cornstalk-deep) calc(100% - 1px)
+  );
 }
 @media (min-width: 768px) {
-  .frame::before { height: max(calc(env(safe-area-inset-top, 0px) + 6px), 32px); }
-  .frame::after { bottom: 0; height: max(calc(env(safe-area-inset-bottom, 0px) + 6px), 22px); }
+  .frame::before { height: max(calc(env(safe-area-inset-top, 0px) + 14px), 42px); }
+  .frame::after { bottom: 0; height: max(calc(env(safe-area-inset-bottom, 0px) + 14px), 32px); }
   .frame > .frame-left,
-  .frame > .frame-right { width: 18px; }
+  .frame > .frame-right { width: 20px; }
 }
 
 /* In standalone (home-screen PWA), mirror top + bottom strip heights so the
@@ -114,17 +169,17 @@ body {
    home-indicator inset, so we add it to the bottom strip too. */
 @media (display-mode: standalone) {
   .frame::before {
-    height: max(calc(env(safe-area-inset-top, 0px) + 6px), 50px);
+    height: max(calc(env(safe-area-inset-top, 0px) + 14px), 60px);
   }
   .frame::after {
-    height: max(calc(env(safe-area-inset-top, 0px) + 6px), 50px);
+    height: max(calc(env(safe-area-inset-top, 0px) + 14px), 60px);
   }
   @media (min-width: 768px) {
     .frame::before {
-      height: max(calc(env(safe-area-inset-top, 0px) + 10px), 50px);
+      height: max(calc(env(safe-area-inset-top, 0px) + 18px), 60px);
     }
     .frame::after {
-      height: max(calc(env(safe-area-inset-top, 0px) + 10px), 50px);
+      height: max(calc(env(safe-area-inset-top, 0px) + 18px), 60px);
     }
   }
 }
