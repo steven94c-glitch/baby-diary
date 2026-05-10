@@ -60,14 +60,7 @@ body {
 /* ------- Site frame / nursery trim ------- */
 .frame {
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  /* lvh = largest viewport — frame always extends to the physical screen
-     bottom so Safari's URL bar overlays the trim instead of floating
-     above empty content during scroll. */
-  height: 100lvh;
+  inset: 0;
   pointer-events: none;
   z-index: 100;
 }
