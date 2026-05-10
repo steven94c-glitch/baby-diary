@@ -64,9 +64,10 @@ body {
   left: 0;
   right: 0;
   bottom: 0;
-  /* dvh tracks Safari's URL bar so the bottom strip doesn't separate
-     from the chrome when the URL bar shows/hides during scroll */
-  height: 100dvh;
+  /* lvh = largest viewport — frame always extends to the physical screen
+     bottom so Safari's URL bar overlays the trim instead of floating
+     above empty content during scroll. */
+  height: 100lvh;
   pointer-events: none;
   z-index: 100;
 }
@@ -105,9 +106,7 @@ body {
 }
 .frame::after {
   bottom: 0;
-  /* Tall on mobile non-standalone so Safari's URL bar overlays the strip
-     rather than floating above content. PWA media query below overrides. */
-  height: max(calc(env(safe-area-inset-bottom, 0px) + 60px), 72px);
+  height: max(calc(env(safe-area-inset-bottom, 0px) + 10px), 24px);
   background-image: linear-gradient(
     to top,
     transparent 0,
