@@ -117,7 +117,7 @@ async function handleNewMessage(msg: TgMessage): Promise<void> {
     await sendPushToAll({
       title: `${babyName}'s diary`,
       body: author ? `${author}: ${preview}` : preview,
-      url: "/babydiary",
+      url: "/",
       tag: `entry-${entry.id}`,
     });
   } catch (err) {

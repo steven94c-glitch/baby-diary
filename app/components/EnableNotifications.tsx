@@ -73,7 +73,7 @@ export function EnableNotifications() {
     if (!vapidKey) return;
     setState("pending");
     try {
-      const reg = await navigator.serviceWorker.register("/babydiary/sw.js");
+      const reg = await navigator.serviceWorker.register("/sw.js");
       const permission = await Notification.requestPermission();
       if (permission !== "granted") {
         setState("denied");
@@ -83,7 +83,7 @@ export function EnableNotifications() {
         userVisibleOnly: true,
         applicationServerKey: urlBase64ToUint8Array(vapidKey) as unknown as BufferSource,
       });
-      const res = await fetch("/babydiary/api/subscribe", {
+      const res = await fetch("/api/subscribe", {
         method: "POST",
         headers: { "content-type": "application/json" },
         body: JSON.stringify(sub.toJSON()),
