@@ -15,11 +15,11 @@ self.addEventListener("push", (event) => {
   }
   const title = data.title || "Baby diary";
   const body = data.body || "New post on the diary";
-  const url = data.url || "/";
+  const url = data.url || "/babydiary";
   const options = {
     body,
-    icon: "/icon",
-    badge: "/icon",
+    icon: "/babydiary/icon",
+    badge: "/babydiary/icon",
     tag: data.tag || "diary-post",
     data: { url },
   };
@@ -28,7 +28,7 @@ self.addEventListener("push", (event) => {
 
 self.addEventListener("notificationclick", (event) => {
   event.notification.close();
-  const url = (event.notification.data && event.notification.data.url) || "/";
+  const url = (event.notification.data && event.notification.data.url) || "/babydiary";
   event.waitUntil(
     self.clients.matchAll({ type: "window", includeUncontrolled: true }).then((clients) => {
       for (const client of clients) {
